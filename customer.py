@@ -40,10 +40,7 @@ class Customer:
         for rental in self.rentals:
             # compute rental change
             # award renter points
-            if rental.get_movie().get_price_code() == Movie.NEW_RELEASE:
-                frequent_renter_points += rental.get_days_rented()
-            else:
-                frequent_renter_points += 1
+            frequent_renter_points += rental.get_rental_points()
             #  add detail line to statement
             statement += fmt.format(rental.get_movie().get_title(), rental.get_days_rented(), rental.get_price())
             # and accumulate activity
