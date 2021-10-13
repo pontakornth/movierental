@@ -28,7 +28,7 @@ class Rental:
     def get_days_rented(self):
         return self.days_rented
 
-    def calculate_charge(self):
+    def get_price(self):
         amount = 0
         if self.get_movie().get_price_code() == Movie.REGULAR:
             # Two days for $2, additional days 1.50 each.
