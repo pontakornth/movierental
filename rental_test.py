@@ -17,13 +17,22 @@ class RentalTest(unittest.TestCase):
 		self.assertEqual("CitizenFour", m.get_title())
 		self.assertEqual(Movie.REGULAR, m.get_price_code())
 
-	@unittest.skip("TODO add this test when you refactor rental price")
 	def test_rental_price(self):
-		rental = Rental(self.new_movie, 1)
-		self.assertEqual(rental.get_price(), 3.0)
-		rental = Rental(self.new_movie, 5)
-		self.assertEqual(rental.get_price(), 15.0)
-		self.fail("TODO add more tests for other movie categories")
+		tests = [
+			# (movie, days rented, result)
+			(self.new_movie, 1, 3.0),
+			(self.new_movie, 5, 15.0),
+			(self.regular_movie, 1, 2.0),
+			(self.regular_movie, 2, 2.0),
+			(self.regular_movie, 3, 3.5),
+			(self.childrens_movie, 3, 1.5),
+			(self.childrens_movie, 4, 3.0),
+		]
+		for test in tests:
+			with self.subTest():
+				movie, days, result = test
+				rental = Rental(movie, days)
+				self.assertEqual(rental.get_price(), result)
 
 	@unittest.skip("TODO add test of frequent renter points when you add it to Rental")
 	def test_rental_points(self):
