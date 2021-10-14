@@ -5,19 +5,22 @@ class PriceCode(Enum):
     regular = {
         "base": 2.0,
         "base_days": 2,
-        "day_price": 1.5
+        "day_price": 1.5,
+        "rental_points": lambda days: 1,
     }
 
     children = {
         "base": 1.5,
         "base_days": 3,
-        "day_price": 1.5
+        "day_price": 1.5,
+        "rental_points": lambda days: 1,
     }
 
     new_release = {
         "base": 0,
         "base_days": 0,
-        "day_price": 3
+        "day_price": 3,
+        "rental_points": lambda days: days,
     }
 
     def price(self, days: int):
@@ -27,6 +30,10 @@ class PriceCode(Enum):
             return price_code["base"]
         price = price_code["base"] + price_code["day_price"] * (days - price_code["base_days"])
         return price
+
+    def get_rental_points(self, days: int):
+        """Get rental points base on days."""
+        return self.value["rental_points"]()
 
 
 class Movie:
