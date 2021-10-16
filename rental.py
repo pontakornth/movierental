@@ -38,6 +38,6 @@ class Rental:
         # return amount
 
     def get_rental_points(self):
-        if self.get_movie().get_price_code() == PriceCode.new_release:
-            return self.get_days_rented()
-        return 1
+        price_code = self.get_movie().get_price_code()
+
+        return price_code.get_rental_points(self.get_days_rented())
