@@ -1,35 +1,38 @@
 from enum import Enum
 
 
+def create_linear_price_formula(base_days, base_price, price_per_day):
+    """Create a calculation function based on base days and price."""
+
+    def linear_formula(days_rented):
+        """Linear formula of price"""
+        if days_rented < base_days:
+            return base_price
+        return base_price + price_per_day * (days_rented - base_days)
+
+    return linear_formula
+
+
 class PriceCode(Enum):
     regular = {
-        "base": 2.0,
-        "base_days": 2,
-        "day_price": 1.5,
+        "price": create_linear_price_formula(2, 2.0, 1.5),
         "rental_points": lambda days: 1,
     }
 
     children = {
-        "base": 1.5,
-        "base_days": 3,
-        "day_price": 1.5,
+        "price": create_linear_price_formula(3, 1.5, 1.5),
         "rental_points": lambda days: 1,
     }
 
     new_release = {
-        "base": 0,
-        "base_days": 0,
-        "day_price": 3,
+        "price": create_linear_price_formula(0, 0, 3),
         "rental_points": lambda days: days,
     }
 
     def price(self, days: int):
         """Get price base on days rented."""
         price_code = self.value
-        if days < price_code["base_days"]:
-            return price_code["base"]
-        price = price_code["base"] + price_code["day_price"] * (days - price_code["base_days"])
-        return price
+        return price_code["price"](days)
 
     def get_rental_points(self, days: int):
         """Get rental points base on days."""
@@ -40,6 +43,7 @@ class Movie:
     """
     A movie available for rent.
     """
+
     # The types of movies (price_code).
 
     def __init__(self, title, price_code: PriceCode):
