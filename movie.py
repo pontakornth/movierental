@@ -36,7 +36,7 @@ class PriceCode(Enum):
 
     def get_rental_points(self, days: int):
         """Get rental points base on days."""
-        return self.value["rental_points"]()
+        return self.value["rental_points"](days)
 
 
 class Movie:
