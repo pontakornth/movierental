@@ -28,9 +28,8 @@ class RentalTest(unittest.TestCase):
 			(self.children_movie, 3, 1.5),
 			(self.children_movie, 4, 3.0),
 		]
-		for test in tests:
-			with self.subTest():
-				movie, days, result = test
+		for movie, days, result in tests:
+			with self.subTest(msg=f"Test {movie} rented {days}, expect price of {result}"):
 				rental = Rental(movie, days)
 				self.assertEqual(rental.get_price(), result)
 
