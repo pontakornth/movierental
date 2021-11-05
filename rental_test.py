@@ -1,20 +1,22 @@
 import unittest
 from rental import Rental, PriceCode
 from movie import Movie
+from datetime import datetime
 
 
 class RentalTest(unittest.TestCase):
 	
 	def setUp(self):
-		self.new_movie = Movie("Mulan", PriceCode.new_release)
-		self.regular_movie = Movie("CitizenFour", PriceCode.regular)
-		self.children_movie = Movie("Frozen", PriceCode.children)
+		current_year = datetime.now().year
+		self.new_movie = Movie("Mulan", current_year, [])
+		self.regular_movie = Movie("CitizenFour", current_year - 2, [])
+		self.children_movie = Movie("Frozen", current_year - 2, ["Children"])
 
 	def test_movie_attributes(self):
 		"""trivial test to catch refactoring errors or change in API of Movie"""
-		m = Movie("CitizenFour", PriceCode.regular)
+		current_year = datetime.now().year
+		m = Movie("CitizenFour", current_year - 2, [])
 		self.assertEqual("CitizenFour", m.get_title())
-		self.assertEqual(PriceCode.regular, m.get_price_code())
 
 	def test_rental_price(self):
 		tests = [
