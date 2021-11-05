@@ -4,15 +4,18 @@
 from movie import Movie
 from rental import Rental, PriceCode
 from customer import Customer
+from datetime import datetime
 
 
 def make_movies():
+    now = datetime.now()
+    this_year = now.year
     movies = [
-        Movie("The Irishman", PriceCode.new_release),
-        Movie("CitizenFour", PriceCode.regular),
-        Movie("Frozen", PriceCode.children),
-        Movie("El Camino", PriceCode.new_release),
-        Movie("Particle Fever", PriceCode.regular)
+        Movie("The Irishman", this_year, ["Action"]),
+        Movie("CitizenFour", this_year - 1, ["Action"]),
+        Movie("Frozen", this_year - 1, ["Children"]),
+        Movie("El Camino", this_year, ["Action"]),
+        Movie("Particle Fever", this_year - 2, ["Fever"])
     ]
     return movies
 
