@@ -1,7 +1,19 @@
 import logging
+from datetime import datetime
 from enum import Enum
+from movie import Movie
 
-from movie import create_linear_price_formula
+
+def create_linear_price_formula(base_days, base_price, price_per_day):
+    """Create a calculation function based on base days and price."""
+
+    def linear_formula(days_rented):
+        """Linear formula of price"""
+        if days_rented < base_days:
+            return base_price
+        return base_price + price_per_day * (days_rented - base_days)
+
+    return linear_formula
 
 
 class PriceCode(Enum):
@@ -28,6 +40,21 @@ class PriceCode(Enum):
     def get_rental_points(self, days: int):
         """Get rental points base on days."""
         return self.value["rental_points"](days)
+
+    @staticmethod
+    def for_movie(movie: Movie):
+        """Generate price code from movie.
+
+        If the movie is from the same year, it is a new release movie.
+        If it has Children genre, it is a children movie.
+        Otherwise, it is normal (regular) movie.
+        """
+        present_year = datetime.now().year
+        if movie.get_year() == present_year:
+            return PriceCode.new_release
+        elif "Children" in movie.get_genres():
+            return PriceCode.children
+        return PriceCode.regular
 
 
 class Rental:
@@ -69,6 +96,6 @@ class Rental:
         # return amount
 
     def get_rental_points(self):
-        price_code = self.get_movie().get_price_code()
+        price_code = self.get_price_code()
 
         return price_code.get_rental_points(self.get_days_rented())
